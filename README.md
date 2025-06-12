@@ -14,10 +14,25 @@ Dalam konteks ini, sistem rekomendasi anime sangat penting untuk bisnis. Dengan 
 
 Anime streaming platforms menghadapi sejumlah tantangan utama seperti overload konten, masalah privasi pengguna, sparsitas data, dan kebutuhan untuk personalisasi yang cepat dan akurat [[7]](https://doi.org/10.31603/komtika.v7i2.9219) [[8]](https://doi.org/10.1007/978-981-16-7502-7_22) [[9]](https://doi.org/10.1109/ICAC3N56670.2022.10074101). 
 
-Pengguna sering merasa kesulitan menemukan anime yang sesuai dengan minat mereka di tengah ribuan judul yang tersedia, sementara masalah privasi muncul ketika data pengguna dari berbagai platform harus digabungkan untuk memberikan rekomendasi yang tepat. Selain itu, adanya pengguna baru atau anime yang kurang populer membuat sulit menghasilkan rekomendasi yang akurat. 
+---
+## **Business Undestanding**
+### **Problem Statements**
+1. Pengguna sering merasa kesulitan menemukan anime yang sesuai dengan minat mereka di tengah ribuan judul yang tersedia.
+2. Metode rekomendasi tradisional, seperti mengelompokkan pengguna dengan preferensi serupa, tidak selalu dapat menangkap perbedaan individu dengan baik, yang menyebabkan rekomendasi yang kurang memenuhi selera unik masing-masing pengguna.
+3. Adanya pengguna baru atau anime yang kurang populer membuat sulit menghasilkan rekomendasi yang akurat.
 
-Untuk mengatasi tantangan ini, saya berencana untuk mengembangkan sistem rekomendasi berbasis content-based dan collaborative filtering. Dengan pendekatan content-based, sistem akan menganalisis preferensi dan kesamaan antara anime untuk memberikan rekomendasi yang relevan, sementara collaborative filtering akan memperhitungkan preferensi pengguna lain yang serupa untuk meningkatkan akurasi. Kombinasi keduanya diharapkan dapat memberikan rekomendasi yang lebih personal, mengurangi overload konten, serta menjaga privasi pengguna dengan meminimalkan pengumpulan data pribadi secara langsung. Sistem ini bertujuan untuk meningkatkan kepuasan pengguna, memperpanjang waktu keterlibatan, dan mendukung pertumbuhan bisnis platform streaming anime.
+### **Goals**
+1. Mengembangkan model yang mampu memberikan rekomendasi anime yang lebih relevan dan personal sesuai dengan selera dan preferensi individu pengguna, mengurangi kebingungannya dalam memilih anime yang tepat.
+2. Membantu pengguna menemukan anime yang sesuai dengan lebih efisien, meskipun ada ribuan judul yang tersedia, sehingga meningkatkan pengalaman pengguna dan mengurangi perasaan kewalahan.
+3. Meningkatkan kepuasan pengguna dan mendorong mereka untuk terus kembali menggunakan platform, meningkatkan tingkat retensi pengguna.
+4. Meningkatkan kepuasan, keterlibatan, dan retensi pengguna, sistem ini diharapkan dapat mendukung pertumbuhan platform streaming anime baik dalam hal jumlah pengguna maupun pendapatan.
 
+### **Solution Statements**
+1. Mengimplementasikan berbagai teknik machine learning untuk membangun sistem rekomendasi anime yang lebih personal dan akurat:
+   - Menggunakan **cosine similarity** untuk mengukur kesamaan antara anime berdasarkan fitur-fitur seperti genre, tema, dan elemen lainnya. Hal ini memungkinkan sistem untuk merekomendasikan anime yang serupa dengan yang sudah ditonton pengguna, berdasarkan karakteristik konten yang relevan.
+   - Menggunakan **deep learning** untuk model **collaborative filtering**, dengan memanfaatkan neural networks untuk memahami dan memprediksi preferensi pengguna berdasarkan pola perilaku dan preferensi pengguna lain. Pendekatan ini memungkinkan model untuk lebih akurat dalam menangkap hubungan yang lebih kompleks antara pengguna dan anime.
+
+2. Menggunakan data input seperti sejarah tontonan pengguna, rating, dan karakteristik anime (genre, tema, dll.) untuk menghasilkan rekomendasi yang lebih relevan dan sesuai dengan preferensi pengguna.
 
 ---
 1. Sharaf, M., Hemdan, E., El-Sayed, A., & El-Bahnasawy, N. (2022). A survey on recommendation systems for financial services. Multimedia Tools and Applications, 81, 16761 - 16781. https://doi.org/10.1007/s11042-022-12564-1.
