@@ -35,6 +35,42 @@ Anime streaming platforms menghadapi sejumlah tantangan utama seperti overload k
 2. Menggunakan data input seperti sejarah tontonan pengguna, rating, dan karakteristik anime (genre, tema, dll.) untuk menghasilkan rekomendasi yang lebih relevan dan sesuai dengan preferensi pengguna.
 
 ---
+## **Data Undestanding**
+### **Dataset Informations**
+| Jenis | Keterangan |
+|-------|------------|
+|Nama   | Anime Recommendations Database|
+|Sumber | [Kaggle](https://www.kaggle.com/datasets/CooperUnion/anime-recommendations-database)|
+|Pengelola| [Cooper Union](https://www.kaggle.com/organizations/CooperUnion)
+|Lisensi| [CC0:Public Domain](https://creativecommons.org/publicdomain/zero/1.0/)|
+|Visibilitas| Publik|
+|Label| *Movie and TV Show, Anime and Manga, Comic and Animation, Popular Culture*|
+|Kebergunaan| 8.24|
+
+### **Variable Desxription**
+
+terdapat 2 dataset yang digunakan pada proyek ini, yaitu dataset anime yang berisi informasi-informasi yang berkaitan dengan anime dan dataset rating yang berisi informasi tentang rating yang di berikan user pada jenis anime tertentu. berikut penjelasan variabel yang ada masing-masing dataset.
+
+**Anime**
+| **Column Name** | **Description** |
+|-----------------|-----------------|
+| `anime_id`      | ID unik yang diberikan oleh myanimelist.net untuk mengidentifikasi setiap anime. |
+| `name`          | Judul lengkap dari anime. |
+| `genre`         | Daftar genre yang terkait dengan anime tersebut, dipisahkan dengan koma. |
+| `type`          | Jenis anime, seperti movie, TV, OVA, dll. |
+| `episodes`      | Jumlah episode dalam serial anime tersebut. Jika anime berupa film, maka nilainya adalah 1. |
+| `rating`        | Rata-rata rating anime ini, diberikan dalam skala 1 sampai 10. |
+| `members`       | Jumlah anggota komunitas yang terdaftar dalam grup anime tersebut. |
+
+**Rating**
+| **Column Name**  | **Description** |
+|------------------|-----------------|
+| `user_id`       | ID pengguna yang dihasilkan secara acak dan tidak dapat diidentifikasi. |
+| `anime_id`      | ID anime yang telah diberi rating oleh pengguna. |
+| `rating`        | Rating yang diberikan oleh pengguna untuk anime tersebut, dalam skala 1 sampai 10. Jika pengguna menonton anime tetapi tidak memberikan rating, maka nilainya adalah -1. |
+
+
+---
 1. Sharaf, M., Hemdan, E., El-Sayed, A., & El-Bahnasawy, N. (2022). A survey on recommendation systems for financial services. Multimedia Tools and Applications, 81, 16761 - 16781. https://doi.org/10.1007/s11042-022-12564-1.
 2. Fayyaz, Z., Ebrahimian, M., Nawara, D., Ibrahim, A., & Kashef, R. (2020). Recommendation Systems: Algorithms, Challenges, Metrics, and Business Opportunities. Applied Sciences. https://doi.org/10.3390/app10217748.
 3. Nadeem, R., & Sivakumar, T. (2023). A Systematic Literature Survey on Recommendation System. International Journal for Research in Applied Science and Engineering Technology. https://doi.org/10.22214/ijraset.2023.48828.
