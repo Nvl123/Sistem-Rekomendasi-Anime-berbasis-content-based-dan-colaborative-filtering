@@ -1,1 +1,32 @@
+![anime](https://figurinemangafrance.fr/cdn/shop/articles/quest-ce-quun-anime.webp?v=1679424987)
+# **Optimalisasi Pengalaman Pengguna dan Peningkatan Viewer Melalui Sistem Rekomendasi Anime Berbasis Content-Based dan Collaborative Filtering**
 
+---
+## **Latar Belakang**
+Sistem rekomendasi kini menjadi alat yang sangat penting dalam berbagai industri, karena mereka membantu pengguna untuk menavigasi informasi yang sangat banyak dan mendukung pengambilan keputusan yang lebih baik. Dalam era digital yang penuh dengan data berlimpah, sistem rekomendasi menawarkan solusi untuk mengatasi tantangan informasi yang berlebihan, dengan mempersonalisasi pengalaman pengguna dan menyarankan pilihan yang relevan [[1]](https://doi.org/10.1007/s11042-022-12564-1). Sistem ini tidak hanya meningkatkan kepuasan pengguna, tetapi juga berperan besar dalam mendorong hasil bisnis yang positif. Banyak perusahaan terkemuka seperti Amazon, Netflix, Facebook, dan LinkedIn mengimplementasikan sistem rekomendasi untuk meningkatkan keterlibatan pengguna, kepuasan, dan keuntungan [[2]](https://doi.org/10.3390/app10217748). 
+
+Seiring dengan berkembangnya teknologi dan jumlah data yang terus meningkat, aplikasi sistem rekomendasi semakin meluas di berbagai domain, seperti e-commerce, hiburan, kesehatan, keuangan, pendidikan, hingga penelitian akademik [[3]](https://doi.org/10.22214/ijraset.2023.48828) [[4]](https://doi.org/10.3390/info15100660). Dengan manfaat yang besar, sistem ini membantu pengguna membuat keputusan yang lebih tepat, serta meningkatkan efisiensi dan hasil dalam berbagai sektor.
+
+Industri anime saat ini berkembang pesat, didorong oleh platform streaming global dan meningkatnya minat internasional. Anime kini semakin populer di kalangan generasi muda, dengan pertumbuhan yang signifikan di negara-negara Barat dan peningkatan produksi tahunan. Meskipun demikian, sektor anime Jepang masih lebih fokus pada pasar domestik, yang membatasi potensi bisnis internasional dan membuka peluang bagi perusahaan luar untuk mempengaruhi industri[[5]](https://doi.org/10.1088/1742-6596/1566/1/012057). Dari data yang di himpun oleh [grandviewresearch.com](https://www.grandviewresearch.com/industry-analysis/anime-market) Ukuran pasar anime global diperkirakan mencapai USD 34.256,2 juta pada tahun 2024 dan diproyeksikan mencapai USD 60.272,2 juta pada tahun 2030, tumbuh pada CAGR sebesar 9,8% dari tahun 2025 hingga 2030. 
+![data perkembangan pasar anime](https://www.grandviewresearch.com/static/img/research/anime-market.png)
+
+Dalam konteks ini, sistem rekomendasi anime sangat penting untuk bisnis. Dengan memberikan rekomendasi yang dipersonalisasi, sistem ini membantu pengguna menemukan anime yang relevan, meningkatkan kepuasan, dan mendorong keterlibatan lebih lama di platform. Bagi penyedia layanan streaming, sistem rekomendasi yang efektif juga berkontribusi pada retensi pengguna dan pertumbuhan pendapatan, serta memberikan diferensiasi di pasar yang kompetitif [[6]](https://doi.org/10.54097/36drh331).
+
+Anime streaming platforms menghadapi sejumlah tantangan utama seperti overload konten, masalah privasi pengguna, sparsitas data, dan kebutuhan untuk personalisasi yang cepat dan akurat [[7]](https://doi.org/10.31603/komtika.v7i2.9219) [[8]](https://doi.org/10.1007/978-981-16-7502-7_22) [[9]](https://doi.org/10.1109/ICAC3N56670.2022.10074101). 
+
+Pengguna sering merasa kesulitan menemukan anime yang sesuai dengan minat mereka di tengah ribuan judul yang tersedia, sementara masalah privasi muncul ketika data pengguna dari berbagai platform harus digabungkan untuk memberikan rekomendasi yang tepat. Selain itu, adanya pengguna baru atau anime yang kurang populer membuat sulit menghasilkan rekomendasi yang akurat. 
+
+Untuk mengatasi tantangan ini, saya berencana untuk mengembangkan sistem rekomendasi berbasis content-based dan collaborative filtering. Dengan pendekatan content-based, sistem akan menganalisis preferensi dan kesamaan antara anime untuk memberikan rekomendasi yang relevan, sementara collaborative filtering akan memperhitungkan preferensi pengguna lain yang serupa untuk meningkatkan akurasi. Kombinasi keduanya diharapkan dapat memberikan rekomendasi yang lebih personal, mengurangi overload konten, serta menjaga privasi pengguna dengan meminimalkan pengumpulan data pribadi secara langsung. Sistem ini bertujuan untuk meningkatkan kepuasan pengguna, memperpanjang waktu keterlibatan, dan mendukung pertumbuhan bisnis platform streaming anime.
+
+
+---
+1. Sharaf, M., Hemdan, E., El-Sayed, A., & El-Bahnasawy, N. (2022). A survey on recommendation systems for financial services. Multimedia Tools and Applications, 81, 16761 - 16781. https://doi.org/10.1007/s11042-022-12564-1.
+2. Fayyaz, Z., Ebrahimian, M., Nawara, D., Ibrahim, A., & Kashef, R. (2020). Recommendation Systems: Algorithms, Challenges, Metrics, and Business Opportunities. Applied Sciences. https://doi.org/10.3390/app10217748.
+3. Nadeem, R., & Sivakumar, T. (2023). A Systematic Literature Survey on Recommendation System. International Journal for Research in Applied Science and Engineering Technology. https://doi.org/10.22214/ijraset.2023.48828.
+4. Alfaifi, Y. (2024). Recommender Systems Applications: Data Sources, Features, and Challenges. Information. https://doi.org/10.3390/info15100660.
+5. Girsang, A., Faruq, A., Herlianto, H., & Simbolon, S. (2020). Collaborative Recommendation System in Users of Anime Films. Journal of Physics: Conference Series, 1566. https://doi.org/10.1088/1742-6596/1566/1/012057.
+6. Chen, J. (2024). The Investigation on Anime-Themed Recommendation Systems. Highlights in Science, Engineering and Technology. https://doi.org/10.54097/36drh331.
+7. Putri, H., & Faisal, M. (2023). Analyzing the Effectiveness of Collaborative Filtering and Content-Based Filtering Methods in Anime Recommendation Systems. Jurnal Komtika (Komputasi dan Informatika). https://doi.org/10.31603/komtika.v7i2.9219.
+8. Liu, Y., Miao, Y., & Wu, S. (2021). A Privacy-Preserving Anime Recommendation Method on Distributed Platform. , 194-204. https://doi.org/10.1007/978-981-16-7502-7_22.
+9. Prakash, V., Raghav, S., Sood, S., Pandey, M., & Arora, M. (2022). Deep Anime Recommendation System: Recommending Anime Using Collaborative and Content-based Filtering. 2022 4th International Conference on Advances in Computing, Communication Control and Networking (ICAC3N), 718-723. https://doi.org/10.1109/ICAC3N56670.2022.10074101.
+10. 
