@@ -233,6 +233,113 @@ dari output di atas makan kita bisa tahu bahwa rating pada anime paling banyak a
 ![image](https://github.com/user-attachments/assets/22f6d7e5-3a69-45f4-92c7-e97e634e2229)
 
 
+---
+## **Data Preparation**
+setelah melakukan berbagai eksplorasi selanjutnya akan di lakukan pemrosesan pada data untuk persiapan pelatihan model nantinya.
+
+### **Remove Missing Values**
+Pengecekan dan penanganan **missing values** sangat penting dalam tahap **preprocessing** sebelum melatih model. Hal ini dilakukan untuk memastikan bahwa data yang digunakan bersih dan tidak mengandung nilai yang hilang, yang dapat menyebabkan kesalahan atau bias dalam model. Data yang tidak lengkap dapat mempengaruhi akurasi dan performa model, sehingga penanganan yang tepat diperlukan untuk meningkatkan kualitas data dan hasil prediksi yang lebih akurat.
+
+untuk mengetahui jumlah missing values kita menggunakan fungsi `isnull()` dan `sum()`. setelah di lakukan pengecekan missing values pada dataset ternyata terdapat missing values pada kolom genre, type dan rating pada dataset anime sementara pada dataset ratinng tidak ada missing values. berikut output dari penngecekan missing values pada data anime:
+
+| Column    | Missing Values |
+|-----------|----------------|
+| anime_id  | 0              |
+| name      | 0              |
+| genre     | 62             |
+| type      | 25             |
+| episodes  | 0              |
+| rating    | 230            |
+| members   | 0              |
+
+missing values terbanyak ada pada kolom rating yaitu sekitar 230 sedangkan jumlah total data yang ada adalah 12 ribuan sehingga missing value terbilang sangat sedikit , oleh karena itu penghapusan dapat menjadi pilihan yang terbaik. untuk menghapus missing value pada dataset anime kita gunakan kode berikut :
+
+>anime.dropna(inplace=True)
+
+untuk memastikan missing value benar-benar sudah tidak ada kita bisa mengulangi kode sebelumnya
+
+>anime.isnull().sum()
+
+berikut outputnya:
+| Column    | Missing Values |
+|-----------|----------------|
+| anime_id  | 0              |
+| name      | 0              |
+| genre     | 0             |
+| type      | 0              |
+| episodes  | 0              |
+| rating    | 0            |
+| members   | 0              |
+
+hasilnya sekarang sudah tidak ada lagi missing value pada data
+
+### **Remove Duplicates**
+Pengecekan dan penanganan **data duplikat** juga penting dalam tahap **preprocessing** sebelum melatih model. Data duplikat dapat menyebabkan model belajar pola yang salah atau memberikan bobot berlebih pada data yang sama, yang bisa mengurangi akurasi model. Dengan menghapus atau menangani duplikat, kita memastikan bahwa data yang digunakan lebih representatif dan mencegah model overfitting. Ini membantu dalam menghasilkan model yang lebih general dan akurat.
+
+untuk menemukan data duplikat pada dataset kita bisa menggunakan fungsi `duplicated()` pada kedua dataset
+
+namun sebelum melakukan pengecekan duplikat pada dataset kita harus merubah kembali kolom genre yang sudah berubah menjadi list menjadi berbentuk string, hal ini di karenakan kolom yang berbentuk list tidak bisa di bandingkan secara langsung sehingga akan menyebabkan eror jika tidak di rubah ke bentuk string. 
+
+untuk merubah kolom genre ke bentuk string kita menggunakan fungsi lambda, pada fungsi di lambda ini setiap element list akan di gabungkan menjadi string tunggal dan dipisahkan dengan spasi
+
+>anime['genre'] = anime['genre'].apply(lambda x: ' '.join(x))
+
+setalah pengecekan di lakukan ditemukan adanya 1 data duplikat pada dataset rating.
+untuk penanganan yang di pilih pada kasus duplikat ini adalah penghapusan hal ini di karenakan jumlah duplikat yang sangat kecil. untuk menghapus duplikat kita bisa menggunakan kode berikut :
+
+>rating.drop_duplicates(inplace=True)
+
+### **Prepocesing for development cosine similiarity**
+Pada tahap ini, kita melakukan vektorisasi teks menggunakan TF-IDF Vectorizer untuk mengubah data teks (genre anime) menjadi bentuk numerik yang bisa diproses oleh model pembelajaran mesin. Fungsi TfidfVectorizer digunakan untuk mengonversi setiap kata atau frasa dalam kolom genre menjadi representasi vektor numerik berdasarkan Term Frequency-Inverse Document Frequency (TF-IDF). TF-IDF mengukur seberapa penting suatu kata dalam dokumen tertentu relatif terhadap seluruh dataset, dengan tujuan memberikan bobot lebih pada kata-kata yang lebih jarang muncul namun relevan dalam konteks.
+
+Melalui proses ini, kolom **genre**, yang sebelumnya berisi teks, diubah menjadi matriks TF-IDF yang menggambarkan pentingnya setiap kata dalam genre relatif terhadap keseluruhan dataset. Matriks TF-IDF ini sangat berguna untuk perhitungan kemiripan antar item pada tahap modeling nantinya
+
+hasil dari proses ini terbentuk sebuah matriks 11876x46, yang menunjukkan bahwa ada 11876 jumlah baris judul anime dan 46 jumlah kolom genre anime 
+
+### **Prepocesing for development model deep learning**
+model deeplearning di sini nantinya akan digunakan untuk pembuatan model colaborative filtering. pada tahap ini akan di lakuka  beberapa tahapan mulai dari proses encoding hingga splitting.
+
+#### **Convert user_ids to list**
+sebelum proses pelatihan model deep learning untuk **colaborative filtering** bertujuan untuk memudahkan manipulasi dan pemrosesan data. Dengan mengonversi **user_id** yang unik menjadi list, kita dapat dengan mudah mengakses setiap ID pengguna untuk membuat representasi data yang diperlukan, seperti memetakan preferensi pengguna atau melakukan encoding ID pengguna.
+
+#### **Slicing Data**
+Pada bagian ini, **1000 pengguna** diambil secara acak dari total **7.813.736 pengguna** yang ada dalam dataset. Hal ini dilakukan dengan menggunakan **`np.random.choice()`** untuk memilih 1000 **user\_id** secara acak, tanpa pengulangan (`replace=False`).
+
+Penyaringan ini bertujuan untuk mengurangi ukuran data yang digunakan dalam tahap eksperimen atau pelatihan model, karena **keterbatasan komputasi** yang dimiliki. Dengan hanya menggunakan sebagian data, proses pelatihan menjadi lebih cepat dan efisien, serta menghindari overfitting jika hanya ingin menguji algoritma atau model dalam skala yang lebih kecil. Setelah itu, data rating untuk 1000 pengguna yang terpilih diambil menggunakan **`isin()`**, yang memungkinkan kita memfilter rating hanya untuk pengguna yang ada dalam sample tersebut.
+
+#### **create min and max variable**
+varibel ini akan digunakan untuk memeriksa rentang nilai rating dalam dataset agar memastikan nilai rating yang diberikan berada dalam batas yang diharapkan (antara 1 hingga 10). Dengan memeriksa nilai **`min()`** dan **`max()`**, kita dapat mengidentifikasi apakah ada rating yang berada di luar rentang yang diinginkan, seperti **`-1`**, yang menandakan pengguna telah menonton anime tetapi belum memberikan rating.
+
+Pengecekan rentang ini penting untuk memastikan bahwa data yang digunakan dalam proses rekomendasi tidak melampaui batas yang ditentukan. Hal ini mencegah masalah dalam perhitungan kemiripan dan membantu model memberikan rekomendasi yang valid dan akurat.
+
+#### **Data Normalization**
+normalisasi dilakukan  pada nilai rating dengan rentang [0, 1], agar nilai rating berada dalam skala yang seragam. Proses normalisasi ini sangat penting karena model deep learning yang digunakan untuk sistem rekomendasi biasanya bekerja lebih baik dengan data yang berada dalam skala yang konsisten. Dalam hal ini, rating yang awalnya berada di rentang 1 hingga 10 diubah menjadi rentang 0 hingga 1 menggunakan rumus:
+
+![minmax](https://miro.medium.com/v2/resize:fit:640/format:webp/1*ye1I00S61GqpR34ABZZFLQ.png)
+
+Normalisasi ini dilakukan karena model deep learning sering kali bekerja dengan binary classification atau output kontinu dalam rentang 0 hingga 1, sehingga sangat membantu untuk menjaga stabilitas pelatihan dan memastikan bahwa model dapat menginterpretasikan nilai rating dengan benar dalam proses pembelajaran.
+
+#### **Feature Engineering**
+pada proses ini di buat 2 dicotionary, **`anime_to_idx`** dan **`user_to_idx`**, yang memetakan **`anime_id`** dan **`user_id`** ke indeks numerik unik. Hal ini dilakukan dengan menggunakan fungsi **`enumerate()`**, yang memberikan pasangan indeks dan nilai dari masing-masing daftar **`anime_ids`** dan **`user_ids_subset`**. Pemetaan ini penting untuk mengonversi ID yang berbentuk string atau objek menjadi representasi numerik yang lebih mudah diproses oleh model deep learning dalam tahap pelatihan.
+
+setalag dictionary dibuat selanjutnya di lakukan pemetaan anime_id dan user_idx dengan menggunakan dictionary sebelumnya.
+
+Pemetaan ini mengonversi **`anime_id`** dan **`user_id`** yang awalnya berbentuk ID menjadi representasi numerik, yang mempermudah pemrosesan data dalam model deep learning.
+
+terakhir kita juga perlu menghapus kolom-kolom yang tidak termapping pada dataframe ratings_subsett.
+
+hasil akhirnya terdapat **102,252 rating** yang valid, dengan **1000 pengguna** dan **5496 anime** yang terdaftar. Data ini sudah disaring dan siap digunakan untuk pelatihan model.
+
+#### **Splitting dataset**
+Bagian ini menyiapkan data untuk pelatihan model. **`x_train_val`** berisi pasangan **`user_idx`** dan **`anime_idx`** sebagai fitur (input), sementara **`y_train_val`** berisi **rating yang sudah dinormalisasi** sebagai target (output). Kedua variabel ini akan digunakan untuk melatih model deep learning.
+
+Dataset kemudian dibagi menjadi **training set** dan **validation set** menggunakan fungsi **`train_test_split`**. Data **`x_train_val`** (fitur) dan **`y_train_val`** (target) dibagi dengan proporsi 80% untuk **training** dan 20% untuk **validation** (`test_size=0.2`). **`random_state=42`** memastikan bahwa pembagian data dilakukan secara konsisten setiap kali kode dijalankan. Hasilnya, data pelatihan disimpan dalam **`x_train`** dan **`y_train`**, sementara data validasi disimpan dalam **`x_val`** dan **`y_val`**.
+
+Tujuan dari pembagian ini adalah untuk melatih model dengan **training set** dan kemudian mengevaluasi kinerjanya menggunakan **validation set**. Pembagian data ini sangat penting karena memberikan gambaran tentang seberapa baik model dapat menggeneralisasi pada data yang tidak terlihat sebelumnya. Dengan memiliki **validation set**, kita bisa menghindari **overfitting**, di mana model terlalu menyesuaikan diri dengan data pelatihan dan tidak bekerja dengan baik pada data baru. Pembagian ini juga memungkinkan kita untuk mengoptimalkan dan menyempurnakan model selama pelatihan.
+
+
+---
+## **Modelling and Result**
 
 
 
