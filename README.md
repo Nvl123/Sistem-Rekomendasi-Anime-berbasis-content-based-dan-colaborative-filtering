@@ -397,6 +397,39 @@ dari hasil percobaan dengan mengimputkan user_id = 19797 model merekomendasikan 
 Dengan menggabungkan Content-Based Filtering dan Collaborative Filtering, sistem rekomendasi dapat mengatasi masalah tersebut. Content-Based Filtering memberikan rekomendasi berdasarkan atribut anime, sementara Collaborative Filtering memperkaya rekomendasi dengan mempertimbangkan interaksi antar pengguna. Gabungan keduanya memungkinkan sistem untuk memberikan rekomendasi yang lebih relevan dan efektif, meskipun ada pengguna baru atau anime yang kurang populer.
 
 ## **Evaluation**
+
+### **Precision@K**
+Precision@10 mengukur proporsi rekomendasi yang relevan di dalam 10 rekomendasi teratas yang diberikan oleh sistem. Dalam konteks ini, relevansi diukur dengan apakah anime yang direkomendasikan telah dinilai oleh pengguna sebelumnya.
+
+![pre@k](https://cdn.prod.website-files.com/660ef16a9e0687d9cc27474a/662c4327f27ee08d3e4d4b34_65777ee1fd55288155f28d37_precision_recall_k2.png)
+
+Cara kerja:
+1. Sistem memberikan 10 rekomendasi teratas.
+2. Dari 10 rekomendasi, dihitung berapa banyak yang relevan dengan preferensi pengguna (yaitu anime yang sudah dinilai oleh pengguna).
+3. Precision dihitung sebagai rasio rekomendasi relevan terhadap total rekomendasi yang diberikan (10).
+
+Kelebihan:
+Precision@K memberikan gambaran seberapa baik sistem dalam memberikan rekomendasi yang relevan dengan preferensi pengguna. Metrik ini lebih fokus pada kualitas rekomendasi dan seberapa tepat sistem dalam memberikan rekomendasi yang relevan.
+
+Contoh:
+Pada output model, Precision@K = 0.5000, yang berarti 50% dari 10 rekomendasi teratas adalah anime yang relevan dengan preferensi pengguna.
+
+### **Recall@K**
+Recall@K mengukur seberapa banyak anime yang relevan ditemukan dalam 10 rekomendasi teratas dibandingkan dengan total anime relevan yang telah dinilai oleh pengguna.
+
+![recall](https://miro.medium.com/v2/resize:fit:1400/1*4idLDQc9FiyCMXy8Ck-LSA.png)
+
+Cara kerja:
+1. Sistem memberikan 10 rekomendasi teratas.
+2. Dari total anime relevan yang telah dinilai oleh pengguna, dihitung berapa banyak yang termasuk dalam 10 rekomendasi.
+3. Recall dihitung sebagai rasio rekomendasi relevan yang ditemukan terhadap total anime relevan yang telah dinilai oleh pengguna.
+
+Kelebihan:
+Recall@K memberikan gambaran seberapa banyak anime relevan yang dapat ditemukan dalam 10 rekomendasi teratas, yang menunjukkan kemampuan sistem untuk menemukan item relevan dalam daftar rekomendasi.
+
+Contoh:
+Pada output model, Recall@K = 0.0019, yang berarti hanya 0.19% dari total anime relevan yang ditemukan dalam 10 rekomendasi teratas dari seluruh anime yang telah dinilai oleh pengguna.
+
 ### **Root Mean Squared Error (RMSE)**
 RMSE mengukur kesalahan rata-rata kuadrat antara nilai prediksi dan nilai sebenarnya. RMSE memberikan bobot lebih besar pada kesalahan yang lebih besar karena menggunakan kuadrat dari selisih.
 
@@ -429,14 +462,19 @@ MAE mudah dipahami dan digunakan, serta memberikan gambaran yang jelas tentang r
 Contoh:
 Pada output model, MAE = 0.1449, yang berarti kesalahan rata-rata model dalam memprediksi rating adalah sekitar 0.14.
 
+
 ### **Kesimpulan**
 Berdasarkan metrik yang digunakan, berikut adalah interpretasi dari hasil yang diperoleh:
-- RMSE = 0.2104: Kesalahan prediksi rata-rata model cukup rendah, menunjukkan bahwa model dapat memprediksi rating dengan cukup akurat.
-- MAE = 0.1449: Kesalahan rata-rata absolut adalah sekitar 0.14 pada skala rating 1-10, yang menunjukkan bahwa model memiliki tingkat kesalahan yang kecil dan memberikan prediksi yang cukup baik.
+- `Precision@K` = 0.5000: Model berhasil memberikan 50% rekomendasi yang relevan dalam 10 rekomendasi teratas, menunjukkan kualitas rekomendasi yang cukup baik.
+- `Recall@K` = 0.0019: Meskipun model memberikan rekomendasi yang relevan, hanya 0.19% dari total anime relevan yang ditemukan dalam 10 rekomendasi teratas, menunjukkan bahwa model masih kesulitan dalam menemukan anime relevan yang lebih banyak.
+- `RMSE` = 0.2104: Kesalahan prediksi rata-rata model cukup rendah, menunjukkan bahwa model dapat memprediksi rating dengan cukup akurat.
+- `MAE` = 0.1449: Kesalahan rata-rata absolut adalah sekitar 0.14 pada skala rating 1-10, yang menunjukkan bahwa model memiliki tingkat kesalahan yang kecil dan memberikan prediksi yang cukup baik.
 
-berikut visualisasi proses trainingnya:
+Secara keseluruhan, model memiliki akurasi prediksi yang baik (RMSE dan MAE yang rendah), namun perlu peningkatan dalam recall untuk meningkatkan kemampuannya dalam menemukan anime relevan dalam jumlah lebih besar di 10 rekomendasi teratas.
+
+berikut visualisasi proses trainingnya dan hasil recall@k dan precsion@k :
 ![image](https://github.com/user-attachments/assets/9c32a296-12f2-45a5-9b30-9ef53290b8f6)
-
+![image](https://github.com/user-attachments/assets/d3155a98-ebe8-429f-9f40-0f50f23f6ebc)
 
 
 ---
