@@ -482,7 +482,7 @@ print(cosine_sim.shape)  # (n_samples, n_samples)
 
 """Output **(11876, 11876)** menunjukkan ukuran matriks **cosine similarity** yang dihasilkan, di mana **11876** adalah jumlah anime dalam dataset. Matriks ini berisi nilai kemiripan antara setiap pasangan anime, dengan setiap elemen matriks menunjukkan tingkat kemiripan antara dua anime berdasarkan genre mereka. Jadi, setiap anime dibandingkan dengan semua anime lainnya dalam dataset.
 
-Fungsi **`get_recommendations(title, cosine_sim)`** memberikan rekomendasi anime berdasarkan **cosine similarity**. Fungsi ini menerima dua argumen: **`title`** (judul anime yang ingin dicari rekomendasinya) dan **`cosine_sim`** (matriks kemiripan antar anime).
+Fungsi **`get_recommendations_fixed(title, cosine_sim)`** memberikan rekomendasi anime berdasarkan **cosine similarity**. Fungsi ini menerima dua argumen: **`title`** (judul anime yang ingin dicari rekomendasinya) dan **`cosine_sim`** (matriks kemiripan antar anime).
 
 1. Fungsi mencari indeks anime berdasarkan **`title`**.
 2. Kemudian, menghitung kemiripan anime tersebut dengan semua anime lainnya menggunakan matriks **cosine\_sim**.
@@ -492,7 +492,7 @@ Fungsi **`get_recommendations(title, cosine_sim)`** memberikan rekomendasi anime
 Jika judul anime tidak ditemukan, fungsi akan menampilkan pesan error.
 """
 
-def get_recommendations(title, cosine_sim=cosine_sim):
+def get_recommendations_fixed(title, cosine_sim=cosine_sim):
     try:
         # Mendapatkan indeks anime berdasarkan judul
         idx = anime[anime['name'] == title].index[0]
@@ -509,23 +509,22 @@ def get_recommendations(title, cosine_sim=cosine_sim):
         # Mendapatkan indeks anime yang direkomendasikan
         anime_indices = [i[0] for i in sim_scores]
 
-        # Membuat DataFrame untuk menampilkan nama anime dan genre
-        recommended_anime = anime[['name', 'genre']].iloc[anime_indices]
+        # Membuat DataFrame dengan anime_id, name, genre
+        recommended_anime = anime[['anime_id', 'name', 'genre']].iloc[anime_indices].copy()
 
-        # Menambahkan skor similarity untuk menampilkan seberapa mirip anime tersebut
+        # Menambahkan skor similarity
         recommended_anime['similarity_score'] = [i[1] for i in sim_scores]
 
-        # Mengembalikan DataFrame yang berisi nama, genre, dan similarity score
         return recommended_anime
 
     except IndexError:
-        # Jika judul tidak ditemukan, tampilkan pesan error
-        return f"Error: Judul anime '{title}' tidak ditemukan dalam data."
+        print(f"Error: Judul anime '{title}' tidak ditemukan dalam data.")
+        return pd.DataFrame()
 
 """setelah fungsi sudah di buat kita dapat melakukan uji coba rekomendasi, di bawah ini di lakukan input judul anime `Fairy Tail (2014)`"""
 
 # Contoh penggunaan: mendapatkan rekomendasi berdasarkan anime 'One Piece'
-recs = get_recommendations('Fairy Tail (2014)')
+recs = get_recommendations_fixed('Fairy Tail (2014)')
 print(recs)
 
 """hasil rekomendasi menunjukkab bahwa anime yang genrenya mirip engan fairy tail adalah
@@ -539,6 +538,102 @@ print(recs)
 - Yuu☆Yuu☆Hakusho: Eizou Hakusho   
 - Tokyo Juushouden   
 - Tokyo Juushouden: Fuuma Gogyou Denshou
+
+Kode ini digunakan untuk menghitung **Precision\@K** dan **Recall\@K** dalam sistem rekomendasi anime berbasis **anime\_id**. Fungsi **`precision_at_k_fixed()`** menghitung proporsi anime relevan di dalam **K rekomendasi teratas**, yang mengukur seberapa baik sistem memberikan rekomendasi yang sesuai dengan preferensi pengguna. Sedangkan, fungsi **`recall_at_k_fixed()`** mengukur seberapa banyak anime relevan ditemukan dalam **K rekomendasi teratas** dibandingkan dengan **total anime relevan** yang telah dinilai oleh pengguna.
+
+Pada bagian ini, **`recommended_anime_ids`** digunakan untuk mendapatkan **anime\_id** dari rekomendasi teratas, dan dibandingkan dengan **user\_rated\_animes** untuk menentukan relevansi. Fungsi ini memastikan evaluasi dilakukan dengan cara yang sesuai, bahkan ketika pengguna tidak memberikan rating untuk anime tertentu, menghindari pembagian dengan nol dengan memberikan nilai **0.0** pada recall jika tidak ada anime yang dinilai.
+"""
+
+# Perbaikan fungsi evaluasi
+def precision_at_k_fixed(recommended_anime, user_rated_animes, k=10):
+    if recommended_anime.empty:
+        return 0.0
+
+    # Gunakan anime_id untuk perbandingan
+    recommended_anime_ids = set(recommended_anime.head(k)['anime_id'])
+    relevant_animes = recommended_anime_ids.intersection(user_rated_animes)
+    return len(relevant_animes) / k
+
+def recall_at_k_fixed(recommended_anime, user_rated_animes, k=10):
+    if recommended_anime.empty:
+        return 0.0
+
+    # Gunakan anime_id untuk perbandingan
+    recommended_anime_ids = set(recommended_anime.head(k)['anime_id'])
+    relevant_animes = recommended_anime_ids.intersection(user_rated_animes)
+    return len(relevant_animes) / len(user_rated_animes) if len(user_rated_animes) > 0 else 0.0
+
+"""Kode ini digunakan untuk evaluasi sistem rekomendasi dengan pendekatan yang lebih terperinci. Fungsi evaluate_recommendation_system() melakukan evaluasi precision dan recall pada sistem rekomendasi berbasis Content-Based Filtering untuk pengguna tertentu. Fungsi ini melakukan evaluasi dengan menggunakan anime yang sudah dinilai oleh pengguna sebagai data uji, menghitung rata-rata precision@10 dan recall@10, serta menampilkan F1-Score yang menggabungkan kedua metrik tersebut."""
+
+# Testing dengan pendekatan yang lebih baik
+def evaluate_recommendation_system(user_id, n_test_animes=5):
+    """
+    Evaluasi sistem rekomendasi dengan cara yang lebih tepat
+    """
+    # Ambil anime yang sudah dinilai oleh user
+    user_rated_animes = set(rating[rating['user_id'] == user_id]['anime_id'].values)
+
+    if len(user_rated_animes) < 2:
+        print(f"User {user_id} belum menilai cukup anime untuk testing.")
+        return
+
+    # Ambil beberapa anime yang sudah dinilai sebagai test set
+    test_animes = list(user_rated_animes)[:n_test_animes]
+
+    total_precision = 0
+    total_recall = 0
+    valid_tests = 0
+
+    print(f"Evaluasi untuk User {user_id}:")
+    print(f"Total anime yang sudah dinilai: {len(user_rated_animes)}")
+    print("-" * 50)
+
+    for anime_id in test_animes:
+        # Cari nama anime
+        anime_name_row = anime[anime['anime_id'] == anime_id]
+        if anime_name_row.empty:
+            continue
+
+        anime_name = anime_name_row['name'].iloc[0]
+
+        # Dapatkan rekomendasi
+        recommendations = get_recommendations_fixed(anime_name, cosine_sim=cosine_sim)
+
+        if not recommendations.empty:
+            precision = precision_at_k_fixed(recommendations, user_rated_animes, k=10)
+            recall = recall_at_k_fixed(recommendations, user_rated_animes, k=10)
+
+            total_precision += precision
+            total_recall += recall
+            valid_tests += 1
+
+            print(f"Anime: {anime_name}")
+            print(f"  Precision@10: {precision:.4f}")
+            print(f"  Recall@10: {recall:.4f}")
+            print()
+
+    if valid_tests > 0:
+        avg_precision = total_precision / valid_tests
+        avg_recall = total_recall / valid_tests
+
+        print("=" * 50)
+        print(f"Rata-rata Precision@10: {avg_precision:.4f}")
+        print(f"Rata-rata Recall@10: {avg_recall:.4f}")
+        print(f"F1-Score: {2 * (avg_precision * avg_recall) / (avg_precision + avg_recall) if (avg_precision + avg_recall) > 0 else 0:.4f}")
+    else:
+        print("Tidak ada test yang valid.")
+
+# Testing dengan user yang berbeda
+test_user_id = 57620
+evaluate_recommendation_system(test_user_id)
+
+"""Output menunjukkan evaluasi sistem rekomendasi untuk **User 57620**.
+
+* **Precision\@10** rata-rata adalah **0.5000**, artinya **50%** dari rekomendasi yang diberikan relevan.
+* **Recall\@10** rata-rata adalah **0.0019**, yang sangat rendah, artinya hanya **0.19%** dari anime relevan yang ditemukan dalam **10 rekomendasi teratas**.
+* **F1-Score** yang rendah (**0.0037**) mencerminkan ketidakseimbangan antara **precision** yang lebih baik dan **recall** yang buruk.
+
+Secara keseluruhan, meskipun sistem mampu memberikan beberapa rekomendasi yang relevan, sistem ini kesulitan menemukan banyak anime relevan dalam **10 rekomendasi teratas**, yang menyebabkan skor **recall** dan **F1-Score** yang sangat rendah.
 
 ### **Colaborative Filtering**
 
