@@ -69,6 +69,38 @@ terdapat 2 dataset yang digunakan pada proyek ini, yaitu dataset anime yang beri
 | `anime_id`      | ID anime yang telah diberi rating oleh pengguna. |
 | `rating`        | Rating yang diberikan oleh pengguna untuk anime tersebut, dalam skala 1 sampai 10. Jika pengguna menonton anime tetapi tidak memberikan rating, maka nilainya adalah -1. |
 
+seteah di gunakan fungsi `info()` pada tiap dataset di dapatkan informas sebagai berikut:
+![Screenshot 2025-06-13 080256](https://github.com/user-attachments/assets/66822262-ece3-4cec-b0e3-5ac0a0caf21c)
+
+dari output di atas menunjukkan bahwa dari 7 kolom yang ada pada variable anime 1 bertipe float `(rating)` 2 bertipe integer `(members dan anime_id)` dan 4 lainnya bertipe object. kemudian kita juga dapat melihat perbedaan jumlah data pada kolom, ini menandakan adanya data duplikat atau missing values pada data
+
+untuk memberikan gabaran yang lebih jelas mari kita lihat sample data dari dataset anime:
+| anime_id | name                               | genre                             | type    | episodes | rating | members |
+|----------|------------------------------------|-----------------------------------|---------|----------|--------|---------|
+| 2139     | Densetsu no Yuusha Da Garn         | Mecha, Sci-Fi, Shounen            | TV      | 46       | 7.34   | 1897    |
+| 5247     | Hidamari Sketch x 365 Recap       | Comedy, School, Slice of Life     | Special | 1        | 6.51   | 424     |
+| 9642     | My Home                           | Slice of Life                     | ONA     | 1        | 5.14   | 45      |
+| 3029     | Muumin                            | Adventure, Comedy, Fantasy, Slice of Life | TV | 65       | 7.10   | 2090    |
+| 7650     | Mononoke Dance                    | Dementia, Music                   | Music   | 1        | 5.19   | 568     |
+
+dari sample di atas kita dapat mendapat informasi bahwa genre dari anime bisa lebih dari 1 dan masing-masing di pisa oleh tanda koma, dan kemudian rating di sini cukup beragam di karekana bentuknya yang float.
+
+mari lakukan hal yang sama pada dataset rating , di mulai dari informasi tipe datanya:
+![Screenshot 2025-06-13 080713](https://github.com/user-attachments/assets/2f8c1fbd-47a6-4ac2-80ba-69a671ce70b4)
+
+semua kolom dari rating bertipe integer, kolom rating pada rating juga berbentuk integer berbeda dengan rating yang ada di dataset anime yang berbentuk float. pada rating tidak muncul jumlah kolom, ini artinya jumlah kolomnya relatif sama.
+
+berikut untyk sampl dari dataset rating
+| user_id  | anime_id | rating |
+|----------|----------|--------|
+| 7433116  | 69341    | 8      |
+| 6980229  | 65175    | 7      |
+| 6384134  | 59213    | -1     |
+
+dari sample ini pada kolom rating terdapat nilai minus, apakah ini outlier? bukan, nilai ini sudah di jelaskan pada informas dataset bahwa nilai -1 menandakan user sudah menonton anime tertentu namun tidak memberikan penilaian.
+
+
+
 
 ---
 1. Sharaf, M., Hemdan, E., El-Sayed, A., & El-Bahnasawy, N. (2022). A survey on recommendation systems for financial services. Multimedia Tools and Applications, 81, 16761 - 16781. https://doi.org/10.1007/s11042-022-12564-1.
