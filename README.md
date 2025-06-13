@@ -104,8 +104,6 @@ untuk lebih memahami data dan mendapatkan lebih banyak informasi kita akan melak
 
 mari kita awali dengan melihat statisktik deskriptif singkat dari datasetnya dengan fungsi `describe()`. berikut hasilnya :
 
-## Data Summary
-
 | Statistic | anime_id         | rating           | members           |
 |-----------|------------------|------------------|-------------------|
 | count     | 12,294           | 12,064           | 12,294            |
@@ -123,6 +121,7 @@ dari output di atas maka kita mendapatkan informasi
 2. `rating`: Rentang rating dari 1.67 hingga 10, mayoritas anime memiliki rating antara 5 hingga 7.
 3. `members`: Rentang jumlah anggota dari 5 hingga 1,013,917, dengan mayoritas anime memiliki komunitas yang lebih kecil (dibawah 9,437 anggota).
 
+**Episodes**
 selanjutnya kita akan mengeksplorasi kolom `episodes` pada dataset anime, pertama kita akan mencari tahu jumlah total jenis episode dengan fungsi :
 > len(anime['episodes'].unique())
 
@@ -141,6 +140,97 @@ output dari kode di atas adalah :
 
 jadi dari output di atas kita tahu ternyata anime terpanjang nya berjudul `oyako club` dengan rating `6.18` 
 
+
+**Genre**
+setiap judul anime dapat memiliki leih dari 1 genre oleh karena dan tiap genre di pisah oleh koma, sehingga untuk mendapatkan informasi jumlah genre tidak cukup hanya dengan fungsi `unique()`, oleh karena itu kita  membuat sebuah fungsi `preprocess_genre` untuk membuat genre berbentuk list atau teksnya di split berdasarkan koma sesuai kondsi dari dataset. setelah di lakukan apply :
+
+>anime['genre'] = anime['genre'].apply(preprocess_genre, printed_flag=printed_flag)
+
+output menunjukkan genre bertipe list, kemudian untuk mendapatkan informasi jumlah genre anime beserta jumlah masing-masing frekuensi genre di gunakan fungsi `explode()` dan `value_counts()` yang kemudian di simpan pada variabel genre_counts dalam bentuk dataframe. 
+
+>genre_counts = anime['genre'].explode().value_counts().reset_index()
+
+kemudian barulah kita bisa mengetahui jumlah genre pda dataset dengan menggunakan fungs `len()` :
+>len(genre_counts)
+
+output dari kode ini adalah 43 yang berarti ada 43 jenis genre berbeda. kemudian untuk mendapatkan informasi lngkap persebaran genrenya digunakan viualisasi bar plot dan beriikut ini hasilnya :
+
+![image](https://github.com/user-attachments/assets/a009865f-be0f-4d9c-9823-2045c4590c50)
+
+dari output di atas kita mendapat informasi bahwa anime comedy memiliki jumlah terbanyak dan anime bergende Yaoi paling sedikit.
+
+**Type**
+kita akan mencari tahu bagaimana persebran data tipe anime yang ada, untuk mendapatkan informasi ini kita cukup menggunakan kode :
+
+> anime['type'].value_counts()
+
+berikut adalah outputnya :
+
+| type   | count |
+|--------|-------|
+| TV     | 3787  |
+| OVA    | 3311  |
+| Movie  | 2348  |
+| Special| 1676  |
+| ONA    | 659   |
+| Music  | 488   |
+
+output dari kode di atas menunjukkab bahwa anime dengan tipe TV adalah yang paling banyak dan anime bertipe musik yang paling sedikit, untuk mendapatkaan informasi yang lebih jelas berikut visualisasi.
+
+![image](https://github.com/user-attachments/assets/55963251-c2e2-4972-ba74-3ff980be3c74)
+
+**Rating**
+terakhir kita akana mencari tahu persebaran data rating dengan menggunakan fungsi yang sama seperti sebelumnya yaitu `value_counts()`:
+
+>anime['rating'].value_counts()
+
+berikut adalah outputnya:
+
+![image](https://github.com/user-attachments/assets/7fd023b8-cf6d-4e0c-a730-37034001c6e1)
+
+dari output di atas kita mendapat informasi bahwa ada 598 data rating 
+
+### **Exploratory Rating**
+setelah selesai melakukan ekplorasi pada dataset anime selanjutnya kita akan melakukan eksplorasi pada dataset rating. pertama kita akan mencari tahu deskripsi statistik singkat dar dataset dengan fungsi `describe()`. berikut ini outputnya:
+
+| Statistic | user_id        | anime_id        | rating          |
+|-----------|----------------|-----------------|-----------------|
+| count     | 7,813,737      | 7,813,737       | 7,813,737       |
+| mean      | 36,727.96      | 8,909.07        | 6.14            |
+| std       | 20,997.95      | 8,883.95        | 3.73            |
+| min       | 1              | 1               | -1              |
+| 25%       | 18,974.00      | 1,240.00        | 6               |
+| 50%       | 36,791.00      | 6,213.00        | 7               |
+| 75%       | 54,757.00      | 14,093.00       | 9               |
+| max       | 73,516.00      | 34,519.00       | 10              |
+
+dari tabel di atas kita dapat mendapat informasi :
+
+1. `user_id`: Jumlah total pengguna adalah sekitar 7,8 juta, dengan nilai user_id bervariasi dari 1 hingga 73,516.
+2. `anime_id`: Terdapat lebih dari 34.000 anime dalam dataset, dengan anime_id berkisar dari 1 hingga 34.519.
+3. rating: Rating diberikan oleh pengguna dengan rentang nilai antara -1 hingga 10. Rata-rata rating adalah 6.14, dengan sebagian besar rating berada di sekitar angka 6 hingga 9.
+
+Secara keseluruhan, data ini menunjukkan variasi besar dalam jumlah pengguna, anime, dan rating yang diberikan, dengan mayoritas rating berada di sisi positif (6-9).
+
+kemudian untuk mendapatkan informasi persebaran data rating user digunakan fungsi `value_counts()` , berikut adalah output nya:
+
+| rating | count    |
+|--------|----------|
+| 8      | 1,646,019|
+| -1     | 1,476,496|
+| 7      | 1,375,287|
+| 9      | 1,254,096|
+| 10     | 955,715  |
+| 6      | 637,775  |
+| 5      | 282,806  |
+| 4      | 104,291  |
+| 3      | 41,453   |
+| 2      | 23,150   |
+| 1      | 16,649   |
+
+dari output di atas makan kita bisa tahu bahwa rating pada anime paling banyak adalah 8 kemudian di ikuti -1 dan paling sedikit adalah 1 , berikut viualisasinya :
+
+![image](https://github.com/user-attachments/assets/22f6d7e5-3a69-45f4-92c7-e97e634e2229)
 
 
 
