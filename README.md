@@ -99,6 +99,50 @@ berikut untyk sampl dari dataset rating
 
 dari sample ini pada kolom rating terdapat nilai minus, apakah ini outlier? bukan, nilai ini sudah di jelaskan pada informas dataset bahwa nilai -1 menandakan user sudah menonton anime tertentu namun tidak memberikan penilaian.
 
+### **Exploratory Anime**
+untuk lebih memahami data dan mendapatkan lebih banyak informasi kita akan melakukan sedikit explorasi dari data Anime. 
+
+mari kita awali dengan melihat statisktik deskriptif singkat dari datasetnya dengan fungsi `describe()`. berikut hasilnya :
+
+## Data Summary
+
+| Statistic | anime_id         | rating           | members           |
+|-----------|------------------|------------------|-------------------|
+| count     | 12,294           | 12,064           | 12,294            |
+| mean      | 14,058.22        | 6.47             | 18,071.34         |
+| std       | 11,455.29        | 1.03             | 54,820.68         |
+| min       | 1                | 1.67             | 5                 |
+| 25%       | 3,484.25         | 5.88             | 225               |
+| 50%       | 10,260.50        | 6.57             | 1,550             |
+| 75%       | 24,794.50        | 7.18             | 9,437             |
+| max       | 34,527           | 10.00            | 1,013,917         |
+
+dari output di atas maka kita mendapatkan informasi
+
+1. `anime_id`: Rentang ID anime dari 1 hingga 34,527, dengan variasi yang sangat besar.
+2. `rating`: Rentang rating dari 1.67 hingga 10, mayoritas anime memiliki rating antara 5 hingga 7.
+3. `members`: Rentang jumlah anggota dari 5 hingga 1,013,917, dengan mayoritas anime memiliki komunitas yang lebih kecil (dibawah 9,437 anggota).
+
+selanjutnya kita akan mengeksplorasi kolom `episodes` pada dataset anime, pertama kita akan mencari tahu jumlah total jenis episode dengan fungsi :
+> len(anime['episodes'].unique())
+
+hasilnya ada 187 jenis episode, sekarang kita akan mencari tahu episode terkecil dan episode terbanyak, namun karena tipe data dari episode adalah `object` maka kita perlu melakukan konversi. pada proyek ini kita akan membuat kolom baru episode dengan tipe data yang telah di konversi menjadi integer, dengan nama `episodes_int`. berikut kode lengkapnya :
+> anime['episodes_int'] = pd.to_numeric(anime['episodes'], errors='coerce').astype('Int64')
+
+setelah kolom baru sudah di buat selanjutnya untuk mendapatkan informasi episode terpendek dan terpanjang kita hanya tinggal meggunakan fungsi `np.min() dan np.max()` dari library `numpy`, hasilnya menunjukkan episode terpendek adalah 1 dan terpanjang ada 1.818 episode. anime dengan 1 episode ini adalah anime movie seperti yang di jelaskan pada  bagian variable descriptoin sementara anime terpanjang ini kira-kira apa ya? untuk menemukan jawaban ini kita bisa menggunakan nilai episode tadi dan mencarinya dengan kode berikut:
+
+> anime[anime['episodes_int'] == 1818]
+
+output dari kode di atas adalah :
+
+| anime_id | name        | genre                    | type | episodes | rating | members | episodes_int |
+|----------|-------------|--------------------------|------|----------|--------|---------|--------------|
+| 6296     | Oyako Club  | Comedy, Slice of Life     | TV   | 1818     | 6.18   | 160     | 1818         |
+
+jadi dari output di atas kita tahu ternyata anime terpanjang nya berjudul `oyako club` dengan rating `6.18` 
+
+
+
 
 
 
