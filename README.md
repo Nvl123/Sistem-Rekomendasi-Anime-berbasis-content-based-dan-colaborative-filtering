@@ -341,9 +341,107 @@ Tujuan dari pembagian ini adalah untuk melatih model dengan **training set** dan
 ---
 ## **Modelling and Result**
 
+### **Cosine Similarity**
+Cosine Similarity adalah metode yang digunakan untuk mengukur kemiripan antara dua vektor dalam ruang berdimensi tinggi dengan menghitung sudut antara keduanya. Dalam konteks sistem rekomendasi, cosine similarity digunakan untuk mengukur seberapa mirip dua anime berdasarkan fitur atau atribut mereka, seperti genre. Nilai cosine similarity berkisar antara -1 (berbeda sepenuhnya) dan 1 (identik). Semakin mendekati nilai 1, semakin mirip dua anime tersebut.
+
+1. Kelebihan Cosine Similarity:
+   - Sederhana dan efisien untuk menghitung kemiripan antar item.
+   - Tidak terpengaruh oleh panjang vektor, sehingga tetap efektif meski panjang fitur atau atribut berbeda.
+2. Kekurangan Cosine Similarity:
+   - Tidak mempertimbangkan interaksi antar pengguna atau preferensi pengguna, hanya mengandalkan fitur item.
+   - Kurang efektif saat data yang tersedia terbatas atau kurang cukup untuk menghitung kemiripan.
+
+dari hasil percoabaan dengan memasukkan judul anime `Fairy  tail (2014)` model cosine similiarity memberikan rekomendasi anime: 
+- JoJo no Kimyou na Bouken: Stardust Crusaders   
+- Bleach: - Memories in the Rain   
+- JoJo no Kimyou na Bouken: Diamond wa Kudakenai   
+- Shaman King   
+- Noragami Aragoto   
+- Noragami   
+- Bleach Movie 2: The DiamondDust - -Rebellion - Mo...   
+- Yuu☆Yuu☆Hakusho: Eizou Hakusho   
+- Tokyo Juushouden   
+- Tokyo Juushouden: Fuuma Gogyou Denshou 
+
+### **Deep Learning**
+Model deep learning yang Anda gunakan, RecommenderNet, memanfaatkan teknik embedding untuk mempelajari hubungan yang lebih kompleks antara pengguna dan anime. Dalam model ini, pengguna dan anime diwakili oleh embedding vectors yang dipelajari selama pelatihan. Model ini menggunakan dot product antara vektor pengguna dan anime untuk memprediksi rating atau kesamaan preferensi antara keduanya. Dengan teknik ini, model dapat menangkap interaksi non-linier yang lebih kompleks dan memberikan rekomendasi yang lebih personal berdasarkan pola interaksi.
+
+1. Kelebihan Model Deep Learning:
+   - Dapat menangani data besar dan kompleks dengan efisien.
+   - Mampu mempelajari hubungan non-linier yang lebih rumit antara pengguna dan anime.
+   - Memberikan rekomendasi yang lebih personal dan akurat berdasarkan interaksi pengguna.
+2. Kekurangan Model Deep Learning:
+   - Memerlukan data yang besar dan waktu pelatihan yang panjang untuk pelatihan yang efektif.
+   - Membutuhkan sumber daya komputasi yang tinggi.
+   - Black-box: Sulit untuk menginterpretasikan bagaimana model menghasilkan rekomendasi, yang bisa menjadi kendala dalam memahami keputusan model.
+
+dari hasil percobaan dengan mengimputkan user_id = 19797 model merekomendasikan 10 top anime:
+1. Fullmetal Alchemist: Brotherhood (ID: 5114) - Predicted Rating: 8.73
+2. Mononoke Hime (ID: 164) - Predicted Rating: 8.28
+3. Tengen Toppa Gurren Lagann (ID: 2001) - Predicted Rating: 8.27
+4. Code Geass: Hangyaku no Lelouch R2 (ID: 2904) - Predicted Rating: 8.25
+5. Howl no Ugoku Shiro (ID: 431) - Predicted Rating: 8.20
+6. Sen to Chihiro no Kamikakushi (ID: 199) - Predicted Rating: 8.17
+7. Clannad: After Story (ID: 4181) - Predicted Rating: 8.15
+8. Death Note (ID: 1535) - Predicted Rating: 8.11
+9. Code Geass: Hangyaku no Lelouch (ID: 1575) - Predicted Rating: 8.09
+10. Hellsing Ultimate (ID: 777) - Predicted Rating: 8.05 
+
+### **How the model can resolve the problem**
+1. Masalah pengguna kesulitan menemukan anime. Content-Based Filtering membantu dengan memberikan rekomendasi berdasarkan kemiripan fitur anime yang sudah disukai pengguna, mempermudah mereka untuk menemukan anime yang sesuai minat mereka.
+
+2. Metode tradisional tidak menangkap perbedaan individu dengan baik. Collaborative Filtering lebih baik dalam menangkap pola kolektif dari pengguna lain dan memberikan rekomendasi berdasarkan interaksi antar pengguna, membuat rekomendasi lebih personal.
+
+3. Pengguna baru dan anime kurang populer. Collaborative Filtering bisa kesulitan memberikan rekomendasi untuk pengguna baru (masalah cold start) atau anime yang kurang populer. Namun, Content-Based Filtering dapat mengatasi masalah ini dengan menggunakan informasi atribut seperti genre atau fitur lain dari anime yang tersedia, meskipun item tersebut tidak populer.
+
+Dengan menggabungkan Content-Based Filtering dan Collaborative Filtering, sistem rekomendasi dapat mengatasi masalah tersebut. Content-Based Filtering memberikan rekomendasi berdasarkan atribut anime, sementara Collaborative Filtering memperkaya rekomendasi dengan mempertimbangkan interaksi antar pengguna. Gabungan keduanya memungkinkan sistem untuk memberikan rekomendasi yang lebih relevan dan efektif, meskipun ada pengguna baru atau anime yang kurang populer.
+
+## **Evaluation**
+### **Root Mean Squared Error (RMSE)**
+RMSE mengukur kesalahan rata-rata kuadrat antara nilai prediksi dan nilai sebenarnya. RMSE memberikan bobot lebih besar pada kesalahan yang lebih besar karena menggunakan kuadrat dari selisih.
+
+![RMSE](https://miro.medium.com/v2/resize:fit:966/1*lqDsPkfXPGen32Uem1PTNg.png)
+
+Cara kerja:
+1. Menghitung selisih antara prediksi dan nilai sebenarnya.
+2. Mengkuadratkan selisih untuk menghukum kesalahan besar.
+3. Menyelesaikan rata-rata dari kuadrat kesalahan tersebut dan mengambil akar kuadrat dari nilai tersebut.
+
+Kelebihan:
+RMSE memberikan gambaran yang jelas tentang seberapa besar kesalahan prediksi secara keseluruhan, dan lebih sensitif terhadap outlier (kesalahan besar).
+
+contoh:
+Pada output model, RMSE = 0.2104, yang berarti kesalahan prediksi rata-rata model adalah sekitar 0.21.
+
+### **Mean Absolut Error (MAE)**
+MAE mengukur rata-rata absolut dari perbedaan antara nilai yang diprediksi dan nilai yang sebenarnya. MAE lebih sederhana dan tidak memberikan bobot lebih besar pada kesalahan yang lebih besar seperti RMSE.
+
+![mae](https://miro.medium.com/v2/resize:fit:853/1*mmUJKWuxJL56AudpnC5qYQ.png)
+
+Cara kerja:
+1. Menghitung selisih antara prediksi dan nilai sebenarnya.
+2. Mengambil nilai absolut dari selisih tersebut.
+3. Menyelesaikan rata-rata dari nilai absolut tersebut.
+
+Kelebihan:
+MAE mudah dipahami dan digunakan, serta memberikan gambaran yang jelas tentang rata-rata kesalahan prediksi tanpa terpengaruh oleh outlier secara signifikan.
+
+Contoh:
+Pada output model, MAE = 0.1449, yang berarti kesalahan rata-rata model dalam memprediksi rating adalah sekitar 0.14.
+
+### **Kesimpulan**
+Berdasarkan metrik yang digunakan, berikut adalah interpretasi dari hasil yang diperoleh:
+- RMSE = 0.2104: Kesalahan prediksi rata-rata model cukup rendah, menunjukkan bahwa model dapat memprediksi rating dengan cukup akurat.
+- MAE = 0.1449: Kesalahan rata-rata absolut adalah sekitar 0.14 pada skala rating 1-10, yang menunjukkan bahwa model memiliki tingkat kesalahan yang kecil dan memberikan prediksi yang cukup baik.
+
+berikut visualisasi proses trainingnya:
+![image](https://github.com/user-attachments/assets/9c32a296-12f2-45a5-9b30-9ef53290b8f6)
+
 
 
 ---
+## **Reference**
+
 1. Sharaf, M., Hemdan, E., El-Sayed, A., & El-Bahnasawy, N. (2022). A survey on recommendation systems for financial services. Multimedia Tools and Applications, 81, 16761 - 16781. https://doi.org/10.1007/s11042-022-12564-1.
 2. Fayyaz, Z., Ebrahimian, M., Nawara, D., Ibrahim, A., & Kashef, R. (2020). Recommendation Systems: Algorithms, Challenges, Metrics, and Business Opportunities. Applied Sciences. https://doi.org/10.3390/app10217748.
 3. Nadeem, R., & Sivakumar, T. (2023). A Systematic Literature Survey on Recommendation System. International Journal for Research in Applied Science and Engineering Technology. https://doi.org/10.22214/ijraset.2023.48828.
@@ -353,4 +451,3 @@ Tujuan dari pembagian ini adalah untuk melatih model dengan **training set** dan
 7. Putri, H., & Faisal, M. (2023). Analyzing the Effectiveness of Collaborative Filtering and Content-Based Filtering Methods in Anime Recommendation Systems. Jurnal Komtika (Komputasi dan Informatika). https://doi.org/10.31603/komtika.v7i2.9219.
 8. Liu, Y., Miao, Y., & Wu, S. (2021). A Privacy-Preserving Anime Recommendation Method on Distributed Platform. , 194-204. https://doi.org/10.1007/978-981-16-7502-7_22.
 9. Prakash, V., Raghav, S., Sood, S., Pandey, M., & Arora, M. (2022). Deep Anime Recommendation System: Recommending Anime Using Collaborative and Content-based Filtering. 2022 4th International Conference on Advances in Computing, Communication Control and Networking (ICAC3N), 718-723. https://doi.org/10.1109/ICAC3N56670.2022.10074101.
-10. 
